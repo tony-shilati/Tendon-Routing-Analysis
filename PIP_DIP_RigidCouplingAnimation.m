@@ -1,4 +1,4 @@
-clear, clc, close
+%clear, clc, close
 
 %% Fourbar linkage info
 
@@ -7,7 +7,7 @@ l3 = 0.7;
 l4 = 0.7;
 
 % Calculate l2
-theta1 = linspace(0, pi/4, 100);
+theta1 = linspace(0, pi/4, 300);
 
 theta1_i = 0 * pi/180;
 theta3_i = 30 * pi/180;
@@ -42,8 +42,10 @@ p2 = [0, -l4];
 N = zeros(1, length(theta1));
 
 plot(0, 0), hold on
+xticks([])
+yticks([])
 axis equal
-axis([-1, 4, -1, 4])
+axis([-1, 5, -1, 5])
 ax = gca;
 for i = 1:length(theta1)
     % clear axes
@@ -70,7 +72,7 @@ for i = 1:length(theta1)
     plot([p3(1), p4(1)], [p3(2), p4(2)], 'k-', 'LineWidth', 1.5)
 
     % Plot link3 of the finger
-    link3 = p3 + 1.5*[cos(theta3 - theta3_i), sin(theta3 - theta3_i)];
+    link3 = p3 + 2*[cos(theta3 - theta3_i), sin(theta3 - theta3_i)];
     plot([p3(1), link3(1)], [p3(2), link3(2)], 'k-', 'LineWidth', 1.5)
 
     circle(0, 0, 0.75);

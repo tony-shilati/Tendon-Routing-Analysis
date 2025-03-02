@@ -49,7 +49,7 @@ R_t = [-r1,  0,   0;
 R_t_pi = pinv(R_t');
 
 % Null space of transpose tendon routing matrix
-R_tN = null(R_t')
+R_tN = null(R_t_pi')
 
 % Joint Torques
 tau = J'*W

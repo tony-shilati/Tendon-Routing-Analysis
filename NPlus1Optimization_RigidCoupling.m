@@ -54,20 +54,81 @@ W = [0, 0, 2.18, -27.48, -4.84, 0]';
 % W = [0, 0, 2.3, 0, 23, 0]';
 
 % Tendon Routing Matrix
-R = [r1, r1;
-     0,  r2] * 1/r_m;
+% Tendon routing matrix
+R_t = [-r1,  0;
+       r1, r2;
+       -r1, -r2];
 
-% Tendon Routing Matrix
-R_i = inv(R');
+% Tendon routing matrix pseudoinverse
+R_t_pi = pinv(R_t');
 
-% Inverse Motor Radius Matrix
-R_m = eye(2) ./r_m; 
+% Null space of transpose tendon routing matrix
+R_tN = null(R_t_pi')
 
 % Joint Torques
-tau = J'*W
+tau = J'*W;
 
-% Tendon Forces
-f = R_m * R_i' * tau
+% Tendon force with pseudoinverse
+f_pi = R_t_pi * tau;
 
-% Back calculate joint torques to verify force solution
-tau_check = R * inv(R_m) * f 
+
+%% Shift Fingers so the geo center is at the origin
+
+
+% Start a parallel pool
+try
+    parpool("local", feature("numcores"))
+catch
+end
+
+tic % Start a timer
+
+
+
+%% Optimization with fmicon
+
+% Call fmincon
+ObjFcnEval=@(s)obj_fcn(f_pi, R_tN, s);
+
+rng default % For reproducibility
+opts = optimoptions(@fmincon,'Algorithm','interior-point','OptimalityTolerance',1e-5);
+
+b = 500;
+problem = createOptimProblem('fmincon','objective',...
+    ObjFcnEval,'x0',1,'lb', -500, 'ub',500, ...
+    'nonlcon', @(s) force_constraints(f_pi, R_tN, s), ...
+    'options',opts);
+
+ms = MultiStart('UseParallel', true, 'Display', 'off');
+[s,fval] = run(ms,problem, 20);
+
+disp("Tendon force calcualted with pseduoinverse: ")
+disp(f_pi)
+
+disp("Tendon force with nullspace optimization: ")
+f = f_pi + (s * R_tN); disp(f)
+
+disp("Null space vector coefficient")
+disp(s)
+
+disp("To verify that the optimized result is a real answer, " + ...
+    "calculate norm(tau - tau_optimized)")
+disp(norm(tau - R_t'*f))
+
+
+%% Define Objective Function and nonlinear constraints
+function f=obj_fcn(f_pi, R_tN, s)
+
+F = f_pi + s * R_tN;
+f=norm(F);
+end
+
+function [c,ceq] = force_constraints(f_pi, R_tN, s)
+f_pi_cons = f_pi + s * R_tN;
+c1 = f_pi_cons(1) + 2;
+c2 = f_pi_cons(2) + 2;
+c3 = f_pi_cons(3) + 2;
+c = [c1; c2; c3];  % Column vector
+ceq = [];  % Equality constraints (not used)
+end
+
