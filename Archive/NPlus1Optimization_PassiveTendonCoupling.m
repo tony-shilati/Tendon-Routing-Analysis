@@ -19,9 +19,11 @@ r1 = 0.0075;
 r2 = 0.005;
 r3 = 0.004;
 
+% Motor radius
+
 %% Finger Dynamics
 
-N = r3/r2;
+N = r2/r3;
 
 % Joint Screw Axes
 S1 = [0, 0, 1, 0, 0, 0]';

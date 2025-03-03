@@ -7,9 +7,9 @@ clear, clc
 
 %% Finger Constants
 % Link Lengths (m)
-L1 = 0.05;
-L2 = 0.03;
-L3 = 0.02;
+L1 = 0.045;
+L2 = 0.032;
+L3 = 0.026;
 
 %%% Joint Angles - closed finger
 % theta1 = 45*pi/180;
@@ -22,9 +22,12 @@ theta2 = 0;
 theta3 = 0;
 
 % Joint radii (m)
-r1 = 0.0075;
-r2 = 0.005;
-r3 = 0.004;
+r1 = 0.01;
+r2 = 0.0075;
+r3 = 0.005;
+
+% Motor Radius
+r_m = 0.005;
 
 %% Finger Dynamics
 
@@ -36,18 +39,23 @@ S3 = [0, 0, 1, L1*sin(theta1)+L2*sin(theta1+theta2), -L1*cos(theta1)-L2*cos(thet
 % Jacobian
 J = [S1, S2, S3];
 
-% Desired Wrench - closed finger
-% W = [0, 0, 2.18, -27.48, -4.84, 0]';
+% Finger tip location
+x_tip = L1*cos(theta1) + L2*cos(theta1+theta2) + L3*cos(theta1+theta2+theta3);
+y_tip = L1*sin(theta1) + L2*sin(theta1+theta2) + L3*sin(theta1+theta2+theta3);
+r = [x_tip, y_tip, 0]';
 
-% Desired Wrench - extended finger
-W = [0, 0, 2.3, 0, 23, 0]';
+% Desired Wrench - 
+% f = [-27.48, -4.84, 0]'; % closed finger
+f = [0, 22.2, 0]'; % closed finger
+m_z = [0, 0, 1]*cross(r, f);
+W = [0, 0, m_z, f']';
+
 
 %% Create matirx of tendon routing matrix values
 % Each row corresponds to the nine entries of the matrix 
-% R = [r11, 0,   0  ;
-%      r21, r22, 0  ;    ==> [r11, r21, r22, r31, r32, r33, r41, r42, r43]
-%      r31, r32, r33;
-%      r41, r42, r43]
+% Pi = [r11, r12, r13, r14;
+%       0  , r22, r23, r24  ;    ==> [r11, r12, r13, r14, r22, r23, r23, r33, r34]
+%       0  , 0  , r33, r34]
 
 r = zeros(512, 9);
 r(:, 1) = r1;
@@ -78,20 +86,18 @@ viable_counter = 0;
 j = 0;
 
 for i = 1:512
-    if abs(sum(sign([r(i, 1), r(i,2), r(i, 4), r(i, 7)]))) == 4 || ...
-            abs(sum(sign([r(i, 3), r(i,5), r(i, 8)]))) == 3 || ...
-            abs(sum(sign([r(i, 6), r(i,9), ]))) == 2
+    if abs(sum(sign(r(i, 1:4)))) == 4 || ...
+       abs(sum(sign(r(i, 5:7)))) == 3 || ...
+       abs(sum(sign(r(i, 8:9)))) == 2
         continue
     end
     j = j+1;
     % Create the tendon routing matrix 
-    R = [r(i, 1), 0,       0  ;
-         r(i, 2), r(i, 3), 0  ; 
-         r(i, 4), r(i, 5), r(i, 6);
-         r(i, 7), r(i, 8), r(i, 9)];
+    Pi = [r(i, 1) , r(i, 2), r(i, 3), r(i, 4);
+          0       , r(i, 5), r(i, 6), r(i, 7); 
+          0       , 0      , r(i, 8), r(i, 9)] * 1/r_m;
 
-    [f_pi, f, null_coeff, optim_error, tau] = NP1_Optimization([L1, L2, L3], ...
-        [theta1, theta2, theta3], R, W);
+    [tau_m, f, null_coeff, optim_error] = NP1_TorqueOptimization(Pi, J, W);
 
     % Calculate the forces
     tendon_forces(j, :) = [i, null_coeff, optim_error, f'];
@@ -103,7 +109,7 @@ for i = 1:512
     tendon_max_force(j) = max(abs(f));
 
     % Collect viable configurations
-    if max(abs(f)) < 150 && std(f) < 300 && f(1) < 0 && f(2) < 0
+    if max(abs(f)) < 150 && f(1) > 2 && f(2) > 2
         viable_counter = viable_counter + 1;
         viable_configs(viable_counter, :) = [i, max(abs(f)), std(f)];
     end

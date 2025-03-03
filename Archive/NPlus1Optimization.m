@@ -40,10 +40,10 @@ J = [S1, S2, S3];
 W = [0, 0, 2.3, 0, 23, 0]';
 
 % Tendon routing matrix
-R_t = [-r1,  0,   0;
-       -r1, -r2,  0;
-       -r1, -r2, -r3;
-        r1,  r2,  r3];
+R_t = [-1/r1,  0,   0;
+       -1/r1, -1/r2,  0;
+       -1/r1, -1/r2, -1/r3;
+        1/r1,  1/r2,  r3];
 
 % Tendon routing matrix pseudoinverse
 R_t_pi = pinv(R_t');
@@ -55,7 +55,7 @@ R_tN = null(R_t_pi')
 tau = J'*W
 
 % Tendon force with pseudoinverse
-f_pi = R_t_pi * tau;
+f_pi = R_t * tau;
 
 
 %% Shift Fingers so the geo center is at the origin
