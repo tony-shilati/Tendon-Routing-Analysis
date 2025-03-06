@@ -25,7 +25,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.002;
 
 % Screw Axes
 S1 = [0, 0, 1, 0, 0, 0]';
@@ -52,7 +52,7 @@ Pi = [r1, r1, r1, -r1;
       0 , r2, r2, -r2;
       0 , 0,  r3, -r3] * 1/r_m;
 
-[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F)
+[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F, r_m)
 
 % Speed
 theta_dot_m = Pi' * pinv(J)*V_s
@@ -84,7 +84,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.002;
 
 N = r2/r3;
 
@@ -112,7 +112,7 @@ V_s = [0, 0, 0, -0.359, 0, 0]';
 Pi = [-r1, r1, r1;
       0 , r2, -r2] * 1/r_m;
 
-[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F)
+[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F, r_m)
 
 % Speed
 theta_dot_m = Pi' * pinv(J)*V_s
@@ -142,7 +142,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.002;
 
 %%% Rigid coupling model
 % Coupling specific lengths 
@@ -184,7 +184,7 @@ V_s = [0, 0, 0, -0.359, 0, 0]';
 Pi = [-r1, r1, r1;
       0 , r2, -r2] * 1/r_m;
 
-[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F)
+[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F, r_m)
 
 % Speed
 theta_dot_m = Pi' * pinv(J)*V_s
@@ -214,7 +214,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.002;
 
 % Screw Axes
 S1 = [0, 0, 1, 0, 0, 0]';
@@ -241,7 +241,7 @@ Pi = [r1, r1, r1, -r1;
       0 , r2, r2, -r2;
       0 , 0,  r3, -r3] * 1/r_m;
 
-[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F)
+[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F, r_m)
 
 % Speed
 theta_dot_m = Pi' * pinv(J)*V_s
@@ -271,7 +271,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.002;
 
 N = r2/r3;
 
@@ -299,7 +299,7 @@ V_s = [0, 0, 0, 0, 0.406, 0]';
 Pi = [-r1, r1, r1;
       0 , r2, -r2] * 1/r_m;
 
-[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F)
+[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F, r_m)
 
 % Speed
 theta_dot_m = Pi' * pinv(J)*V_s
@@ -329,7 +329,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.002;
 
 %%% Rigid coupling model
 % Coupling specific lengths 
@@ -371,7 +371,7 @@ V_s = [0, 0, 0, 0, 0.406, 0]';
 Pi = [-r1, r1, r1;
       0 , r2, -r2] * 1/r_m;
 
-[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F)
+[tau_m, f, s, torque_error] = NP1_TorqueOptimization(Pi, J, F, r_m)
 
 % Speed
 theta_dot_m = Pi' * pinv(J)*V_s

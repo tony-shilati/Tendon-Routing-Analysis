@@ -1,7 +1,4 @@
-function [tau_m, f, null_coeff, optim_error] = NP1_TorqueOptimization(Pi, J, F)
-%% Finger information
-
-r_m = 0.005; % Motor radius
+function [tau_m, f, null_coeff, optim_error] = NP1_TorqueOptimization(Pi, J, F, r_m)
 %% Finger Forces/Torques
 
 % Joint Torques
