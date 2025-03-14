@@ -22,7 +22,7 @@ ax = gca;
 ax.FontSize = 21; 
 grid on
 
-%% Maxon Combo 1 - EC 60 flat 150 W
+%% With Coupling - continuous torque
 
 close, clear, clc
 
@@ -31,78 +31,29 @@ scatter(0, 10.5, 'ko', 'filled', 'SizeData', 100), hold on
 scatter(2.88, 0, 'ko', 'filled', 'SizeData', 100)
 plot([0, 2.88], [10.5, 0], 'k-', 'LineWidth', 5)
 
-N = 12;
-t_stall = 4.3 * N;
-t_cont = 0.3 * 12;
-omg_nl = 4300 * 2 * pi / 60 / N;
+% Current actuator
+% scatter(0, 118, 'ro', 'filled'), hold on
+% scatter(0.540, 0, 'ro', 'filled')
+% plot([0, 0.540], [118, 0], 'r-', 'LineWidth', 2.5)
 
-scatter(0, omg_nl, 'o', 'filled', "MarkerFaceColor", 	"#0072BD", ...
+% Maxon Combo 1 - EC 60 flat 100 W
+scatter(0, 37.5, 'o', 'filled', "MarkerFaceColor", 	"#0072BD", ...
     "MarkerEdgeColor", 	"#0072BD", 'SizeData', 100), hold on
 
-scatter(t_stall, 0, 'o', 'filled', "MarkerFaceColor", 	"#0072BD", ...
+scatter(3.6, 0, 'o', 'filled', "MarkerFaceColor", 	"#0072BD", ...
     "MarkerEdgeColor", 	"#0072BD", 'SizeData', 100)
 
-plot([0, t_stall], [omg_nl, 0], 'LineWidth', 5, "Color", "#0072BD")
+plot([0, 3.6], [37.5, 0], '--', 'LineWidth', 5, "Color", "#0072BD")
 
-% Fill in continuous operating area
-m = -omg_nl/t_stall;
-f = @(x) m*x + omg_nl;
-fill([0, 0, t_cont, t_cont], [0, omg_nl, f(t_cont), 0], "b", "FaceAlpha", 0.3)
+% Maxon Combo 2 - EC 60 flat 80 W
+scatter(0, 27.0, 'o', 'filled', "MarkerEdgeColor", "#A2142F", ...
+    "MarkerFaceColor", "#A2142F", 'SizeData', 100), hold on
 
-% Plot properties
-legend("", "","Ideal Finger Actuator", "","", "150 W - N = 12:1")
+scatter(2.875, 0, 'o', 'filled', "MarkerEdgeColor", "#A2142F", ...
+    "MarkerFaceColor", "#A2142F", 'SizeData', 100)
+plot([0, 2.875], [27.0, 0], '--', 'LineWidth', 5, "Color", "#A2142F")
 
-xlabel('Torque (Nm)', 'FontSize', 17, 'FontName', 'Times New Roman')
-ylabel('Speed (rad/s)', 'FontSize', 17, 'FontName', 'Times New Roman')
-ax = gca;
-ax.FontSize = 21; 
-grid on
-
-%% Maxon Combo 2 - EC 60 flat 100 W
-
-close, clear, clc
-
-% Finger actuator  desired
-scatter(0, 10.5, 'ko', 'filled', 'SizeData', 100), hold on
-scatter(2.88, 0, 'ko', 'filled', 'SizeData', 100)
-plot([0, 2.88], [10.5, 0], 'k-', 'LineWidth', 5)
-
-N = 12;
-t_stall = 4.3 * N;
-t_cont = 0.3 * 12;
-omg_nl = 4300 * 2 * pi / 60 / N;
-
-scatter(0, omg_nl, 'o', 'filled', "MarkerFaceColor", 	"#A2142F", ...
-    "MarkerEdgeColor", 	"#A2142F", 'SizeData', 100), hold on
-
-scatter(t_stall, 0, 'o', 'filled', "MarkerFaceColor", 	"#A2142F", ...
-    "MarkerEdgeColor", 	"#A2142F", 'SizeData', 100)
-
-plot([0, t_stall], [omg_nl, 0], 'LineWidth', 5, "Color", "#A2142F")
-
-% Fill in continuous operating area
-m = -omg_nl/t_stall;
-f = @(x) m*x + omg_nl;
-fill([0, 0, t_cont, t_cont], [0, omg_nl, f(t_cont), 0], "b", "FaceAlpha", 0.3)
-
-% Plot properties
-legend("", "","Ideal Finger Actuator", "","", "150 W - N = 12:1")
-
-xlabel('Torque (Nm)', 'FontSize', 17, 'FontName', 'Times New Roman')
-ylabel('Speed (rad/s)', 'FontSize', 17, 'FontName', 'Times New Roman')
-ax = gca;
-ax.FontSize = 21; 
-grid on
-
-%% Maxon Combo 3 - EC 45 flat 60 W
-
-close, clear, clc
-
-% Finger actuator  desired
-scatter(0, 10.5, 'ko', 'filled', 'SizeData', 100), hold on
-scatter(2.88, 0, 'ko', 'filled', 'SizeData', 100)
-plot([0, 2.88], [10.5, 0], 'k-', 'LineWidth', 5)
-
+% Maxon Combo 3 - EC 45 flat 60 W
 scatter(0, 15.22, 'o', 'filled', "MarkerEdgeColor", "#77AC30", ...
     "MarkerFaceColor",	"#77AC30", 'SizeData', 100), hold on
 
@@ -113,7 +64,8 @@ plot([0, 3.225], [15.22, 0], '--', 'LineWidth', 5, "Color", "#77AC30")
 
 
 % Plot properties
-legend("", "","Ideal Finger Actuator", "","", "150 W - N = 12:1")
+legend("", "","Ideal Finger Actuator", "","", "100 W - N = 12:1", ...
+    "", "", "80 W - N = 23:1", "", "", "60 W - N = 43:1")
 
 xlabel('Torque (Nm)', 'FontSize', 17, 'FontName', 'Times New Roman')
 ylabel('Speed (rad/s)', 'FontSize', 17, 'FontName', 'Times New Roman')
