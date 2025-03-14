@@ -25,7 +25,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.008;
 
 % Screw Axes
 S1 = [0, 0, 1, 0, 0, 0]';
@@ -86,7 +86,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.008;
 
 N = r2/r3;
 
@@ -146,7 +146,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.008;
 
 %%% Rigid coupling model
 % Coupling specific lengths 
@@ -220,7 +220,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.008;
 
 % Screw Axes
 S1 = [0, 0, 1, 0, 0, 0]';
@@ -279,7 +279,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.008;
 
 N = r2/r3;
 
@@ -339,7 +339,7 @@ r2 = 0.0075;
 r3 = 0.005;
 
 % Motor radii (m)
-r_m = 0.005;
+r_m = 0.008;
 
 %%% Rigid coupling model
 % Coupling specific lengths 
